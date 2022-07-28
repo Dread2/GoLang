@@ -828,7 +828,7 @@ fmt.Errorf("User %d not found", 123) // Print a formatted error
 
 Standard Verbs
 ```
-%v	the value in a default format					%v Example: 
+%v	the value in a default format
 	when printing structs, the plus flag (%+v) adds field names. 
 %#v	a Go-syntax representation of the value
 %T	a Go-syntax representation of the type of the value
@@ -906,3 +906,104 @@ Width is specified by an optional decimal number immediately preceding the verb.
 %9.2f  width 9, precision 2
 %9.f   width 9, precision 0
 ```
+Examples of Verbs in use
+```
+%T  a Go-syntax representation of the type of the value
+fmt.Printf("Hello %T %v", 10)
+// Prints out the type: Int, String, Bool, etc
+Output: int
+%v  the value in a default format when printing structs, the plus flag (%+v) adds field names. 
+fmt.Printf("Hello, %v", 10) 
+// Prints out the value in a default format: Whatever the value of the variable is or the statement you put there. 
+Output: Hello, 10
+%%  A literal percent sign; consumes no value. 
+fmt.Printf("Hello %T %v %%", 10, 10)
+// Prints out an actual percent sign. In Go you can't just type: fmt.Printf("Hello %T %v %", 10, 10).
+Output: Hello int 10 %
+Output
+%t the word true or false
+Broken Function: fmt.Printf("Hello %t", 10)
+// Prints out the format, True or False. 
+Output: Hello %!t(int = 10). This is because it can not format it. It is not a true or false value. 
+Working Function: fmt.Printf("Hello %t", true)
+Output: Hello true
+%b (base 2) 
+fmt.Printf("Number: %b", 1025) 
+// Prints the number, but in base 2 format. (Binary)
+Output: 10000000001
+%o (base 8)
+fmt.Printf("Number: %o", 1024)
+// Prints the number, but in the base 8 format. (Octal) 
+Output: 2000
+%d (base 10)
+fmt.Printf("Number: %d", 1024)
+// Prints out the same value, or (1024). Humans use base 10.
+Output: 1024
+%x (hexadecimal)
+fmt.Printf("Number: %x", 3435)
+// Prints out the value in hexadecimal in lowercase.
+Output: d6b
+%X (hexadecimal capital)
+fmt.Printf("Number: %X, 3435)
+// Prints out the value in hexadecimal in uppercase.
+Output: D6B
+%e (scientific notation) 
+fmt.Printf("Number: %e", 2.37363736283273283282)
+// Prints out the value in scientific notation (Too long normally).
+Output: 2.373637e+00
+%f (Decimal point, but no exponent)
+fmt.Printf("Number: %f", 2.37363736283273283282)
+// Prints out the decimal value, but with no exponent.
+Output: 2.373637
+%g for large exponents (Floating point numbers)
+fmt.Printf("Number: %g", 2.37363736283273283282) 
+// Prints out large float, use for floating point.
+Output:  2.3736373628327327
+%s (default for strings)
+fmt.Printf("Number: %s", "tim")
+// Prints out the default value for strings.
+Output: Number: tim
+%q (double quoted string)
+fmt.Printf("Number: %q", "tim")
+// Prints out the value for strings, but with double quotes.
+Output: Number: "tim"
+Width and Precision (When you want to make a string, or something a certain length)
+%f (default width, default precision)
+fmt.Printf("float1: %f\n", 78.9)
+// Prints out the default width, and precision of a number.
+Output: 78.900000
+%9f (width 9, default precision)
+fmt.Printf("String: %9f\n", "tim") 
+// Prints out the input with 9 spaces.
+Output: String: %!f(string=      tim)
+%0.2f (default width, precision 2)
+fmt.Printf("%0.2f\n", 16.540)
+// Prints the output, but rounded to 2 decimal points.
+Output: 16.54
+%9.2f (width 9, precision 2) 
+fmt.Printf("%9.2f\n", 16.540)
+// Prints the output, rounded to 2 decimal points and 9 spaces.
+Output:         16.54
+%9.f (width 9, precision 0)
+// Prints the output, rounded to a whole number with no decimal points, and 9 spaces.
+Padding
+%09d (pads digit to length 9 with preceeding 0's) 
+fmt.Printf("Number: %9q", "tim"
+// Prints the output with 9 spaces. 
+Output: Number:         "tim"
+%-9q (pads digits to the left 9 instead of right)
+fmt.Printf("Number; %-9q is cool", "tim")
+// Prints the otput with 9 spaces, but this time to the left
+%-9q = 9 spaces to left, %9q = 9 spaces to the right
+Output: Number: "tim"         is cool
+Printf Formatting vs Sprintf 
+Example:
+var out string = fmt.Sprintf("Number: %07d is cool", 45)
+fmt.Println(out)
+Output: Number:  0000045 is cool
+Escape Characters 
+\n makes a newline. If you don't newline after the use of Printf multiple times, it looks weird.
+\t tabs. A good example is this:
+fmt.Printf("String: \t", "tim")
+Outputs: string: 	%!(EXTRA string=tim)
+Looks like a literal tab. 
